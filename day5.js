@@ -1,3 +1,9 @@
+/**
+ * Day 5: Advent of Code 2025
+ * Problem: Cafeteria - Range and number processing
+ */
+
+// Day 5 - Sample Data
 const sampleData = `3-5
 10-14
 16-20
@@ -10,6 +16,7 @@ const sampleData = `3-5
 11
 32`;
 
+// Day 5 - Actual Data
 const actualData = `555446616037526-562418866981541
 104559601644328-106424702873390
 486897425165496-490273052408222
@@ -1264,5 +1271,6 @@ const cafeteria = (input) => {
   return [rottenTotal, freshFound, freshTotal];
 };
 
-console.log(cafeteria(sampleData)); // [ 3, 4, 14 ]
-console.log(cafeteria(actualData)); // [ 529, 657, 344260049617193 ]
+// Test with sample and actual data
+console.log('Sample Data:', cafeteria(sampleData)); // Expected: [ 3, 4, 14 ]
+console.log('Actual Data:', cafeteria(actualData)); // Expected: [ 529, 657, 344260049617193 ]

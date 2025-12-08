@@ -1,4 +1,9 @@
-// Day 3 Actual Data
+/**
+ * Day 3: Advent of Code 2025
+ * Problem: Lobby Refactoring - Extract highest digits in sequence
+ */
+
+// Day 3 - Actual Data
 const input = `5322532524412431424224553433255235332456444432543425324265123263732352855273513551554412243351423435
 2222222322121523223222213232233421252123126222322231213332212224251322442212422523422123222524243222
 2222322222122222222222241221221133222211222122122217211221222123222252222231322222122222131122211122
@@ -207,13 +212,20 @@ const sampleInput = `987654321111111
 818181911112111`;
 
 /**
+/**
+ * Day 3: Lobby Refactored - Extract highest digits in sequence
  * Processes input lines to calculate a grand total based on voltage length.
  * For each line, iterates through characters to find the highest digit in successive ranges,
  * building a number by selecting the maximum digit at each position while ensuring
  * enough remaining digits for subsequent selections.
+ * @param {string} input - Multi-line string of digit sequences
+ * @param {number} voltagelength - Number of digits to extract (default: 12)
+ * @returns {number} - Sum of all extracted numbers
  */
 const lobbyRefactored = (input, voltagelength = 12) => {
   let grandTotal = 0;
+
+  // Parse input into arrays of digits
   const lines = input
     .split('\n')
     .map((line) => line.trim().split('').map(Number));
@@ -221,24 +233,35 @@ const lobbyRefactored = (input, voltagelength = 12) => {
   lines.forEach((line, index) => {
     let total = 0;
     let idx = 0;
+
+    // Extract highest digits in sequence
     for (let i = 0; i < voltagelength; i++) {
       let highest = -1;
+
+      // Find highest digit in remaining valid range
       for (let j = idx; j < line.length - (voltagelength - i - 1); j++) {
         let num = line[j] || -1;
 
         if (num > highest) {
           highest = num;
-          idx = j + 1;
+          idx = j + 1; // Move past this digit for next iteration
         }
       }
+
+      // Build the number digit by digit
       total = total * 10 + highest;
     }
+
     grandTotal += total;
   });
+
   return grandTotal;
 };
 
-console.log(lobbyRefactored(sampleInput, 2));
-console.log(lobbyRefactored(input, 2));
-console.log(lobbyRefactored(sampleInput));
-console.log(lobbyRefactored(input));
+// Test with voltage length 2
+console.log('Sample (voltage=2):', lobbyRefactored(sampleInput, 2));
+console.log('Actual (voltage=2):', lobbyRefactored(input, 2));
+
+// Test with default voltage length (12)
+console.log('Sample (voltage=12):', lobbyRefactored(sampleInput));
+console.log('Actual (voltage=12):', lobbyRefactored(input));

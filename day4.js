@@ -1,4 +1,9 @@
-// Day 4 Actual Data
+/**
+ * Day 4: Advent of Code 2025
+ * Problem: Printing Department - Grid symbol analysis
+ */
+
+// Day 4 - Actual Data
 const input = `@@@..@@....@.@.@@.@.....@@@@@@..@.@@@@@@@@@.@@@@@@..@@@@@.@@.@@.@.@.@..@@@@.@.@.@.@@..@....@.@@@...@@.@@@@...@@@@@@..@@@@@@..@@@@@@.@@..@.@
 @@@@.@@@..@@@.@.@.@@@@..@.@@..@.@@@.@.@...@.@@@@@@@@@@@.@@@.@@@@@.@@.@@@@@.@.@@@.@.@.@@@@@@..@.@..@@.@.@@@.@.@.@@.@@.@@.@@.@@@@.@@@.@@@.@@@
 @@@@.@.@@@@.@@.@@@.@.@@@@@.@..@@@.@@..@@@.@@@..@@.@@...@.@@.@@@.@@@.@.@@.@@@@@@.@@.@@.@@.@@.@@@.@@@@@@@@@@@@@@@@@.@@.@.@@@@@@@@...@@@@@.@@@
@@ -151,21 +156,40 @@ const sampleInput = `..@@.@@@@.
 .@@@@@@@@.
 @.@.@@@.@.`;
 
-// Part 1: Count total @ symbols removed by iteratively eliminating those with fewer than 4 @ neighbors
-// Each iteration removes exposed symbols and continues until no more can be removed
+/**
+ * Day 4 - Part 1: Printing Department
+ * Count total @ symbols removed by iteratively eliminating those with fewer than 4 @ neighbors
+ * Each iteration removes exposed symbols and continues until no more can be removed
+ * @param {string} input - Multi-line grid string
+ * @returns {number} - Count of removed symbols
+ */
 const printingDepartment = (input) => {
   const grid = input.split('\n').map((line) => line.split(''));
   let total = 0;
 
+  /**
+   * Check if a cell contains @ or x symbol
+   * @param {number} row - Row index
+   * @param {number} col - Column index
+   * @returns {boolean} - True if cell contains @ or x
+   */
   const checkCell = (row, col) => {
     if ('@x'.includes(grid?.[row]?.[col])) {
       return true;
     }
   };
 
+  /**
+   * Check if a cell has fewer than 4 @ neighbors (exposed)
+   * @param {number} row - Row index
+   * @param {number} col - Column index
+   * @returns {boolean} - True if cell should be removed
+   */
   const checkSurroundingCells = (row, col) => {
     if (grid[row][col] !== '@') return false;
+
     let count = 0;
+    // Check all 8 surrounding cells
     if (checkCell(row - 1, col - 1)) count++;
     if (checkCell(row - 1, col)) count++;
     if (checkCell(row - 1, col + 1)) count++;
@@ -174,15 +198,17 @@ const printingDepartment = (input) => {
     if (checkCell(row + 1, col - 1)) count++;
     if (checkCell(row + 1, col)) count++;
     if (checkCell(row + 1, col + 1)) count++;
+
     return count < 4;
   };
 
+  // Process grid and mark exposed cells for removal
   for (let row = 0; row < grid.length; row++) {
     for (let col = 0; col < grid[row].length; col++) {
       if (checkSurroundingCells(row, col)) {
         console.log({ row, col });
         total += 1;
-        grid[row][col] = 'x';
+        grid[row][col] = 'x'; // Mark as removed
       }
     }
   }
@@ -246,7 +272,10 @@ const printingDepartment2 = (input) => {
   return grandTotal;
 };
 
-// console.log(printingDepartment(sampleInput)); // Expected output: 13
-// console.log(printingDepartment(input)); // Expected output: 1474
-console.log(printingDepartment2(sampleInput)); // Expected output: 43
-console.log(printingDepartment2(input)); // Expected output: 61
+// Test Part 1 (commented out)
+// console.log('Part 1 - Sample:', printingDepartment(sampleInput)); // Expected: 13
+// console.log('Part 1 - Actual:', printingDepartment(input)); // Expected: 1474
+
+// Test Part 2
+console.log('Part 2 - Sample:', printingDepartment2(sampleInput)); // Expected: 43
+console.log('Part 2 - Actual:', printingDepartment2(input)); // Expected: 61
