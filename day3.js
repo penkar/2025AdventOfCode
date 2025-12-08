@@ -1,3 +1,4 @@
+// Day 3 Actual Data
 const input = `5322532524412431424224553433255235332456444432543425324265123263732352855273513551554412243351423435
 2222222322121523223222213232233421252123126222322231213332212224251322442212422523422123222524243222
 2222322222122222222222241221221133222211222122122217211221222123222252222231322222122222131122211122
@@ -199,11 +200,18 @@ const input = `53225325244124314242245534332552353324564444325434253242651232637
 2222132432222132423333424122322232422419224222223232212121113222333243231482222562232422442322233412
 1322232245222415222432632212222232132125222522222424251221232212222224137321221142152242222112122421`;
 
+// Day 3 Sample Data
 const sampleInput = `987654321111111
 811111111111119
 234234234234278
 818181911112111`;
 
+/**
+ * Processes input lines to calculate a grand total based on voltage length.
+ * For each line, iterates through characters to find the highest digit in successive ranges,
+ * building a number by selecting the maximum digit at each position while ensuring
+ * enough remaining digits for subsequent selections.
+ */
 const lobbyRefactored = (input, voltagelength = 12) => {
   let grandTotal = 0;
   const lines = input
@@ -230,8 +238,6 @@ const lobbyRefactored = (input, voltagelength = 12) => {
   return grandTotal;
 };
 
-console.log(lobby(sampleInput));
-console.log(lobby(input));
 console.log(lobbyRefactored(sampleInput, 2));
 console.log(lobbyRefactored(input, 2));
 console.log(lobbyRefactored(sampleInput));

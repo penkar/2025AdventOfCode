@@ -1,5 +1,4 @@
-// Day 1 - Part 1: Secret Entrance
-
+// Day 1 Sample Data
 const secretEntranceSampleInput = `L68
 L30
 R48
@@ -11,6 +10,7 @@ L99
 R14
 L82`;
 
+// Day 1 Actual Data
 const secretEntranceInput = `R6
 R18
 L39
@@ -4799,8 +4799,6 @@ const secretEntrance = (inputDirections) => {
   }
   return [((startingPosition % 100) + 100) % 100, zeroHits];
 };
-// console.log(secretEntrance(secretEntranceSampleInput));
-// console.log(secretEntrance(secretEntranceInput));
 // Answer - 1180
 
 // Day 1 - Part 2

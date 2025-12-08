@@ -1,3 +1,4 @@
+// Day 4 Actual Data
 const input = `@@@..@@....@.@.@@.@.....@@@@@@..@.@@@@@@@@@.@@@@@@..@@@@@.@@.@@.@.@.@..@@@@.@.@.@.@@..@....@.@@@...@@.@@@@...@@@@@@..@@@@@@..@@@@@@.@@..@.@
 @@@@.@@@..@@@.@.@.@@@@..@.@@..@.@@@.@.@...@.@@@@@@@@@@@.@@@.@@@@@.@@.@@@@@.@.@@@.@.@.@@@@@@..@.@..@@.@.@@@.@.@.@@.@@.@@.@@.@@@@.@@@.@@@.@@@
 @@@@.@.@@@@.@@.@@@.@.@@@@@.@..@@@.@@..@@@.@@@..@@.@@...@.@@.@@@.@@@.@.@@.@@@@@@.@@.@@.@@.@@.@@@.@@@@@@@@@@@@@@@@@.@@.@.@@@@@@@@...@@@@@.@@@
@@ -138,6 +139,7 @@ const input = `@@@..@@....@.@.@@.@.....@@@@@@..@.@@@@@@@@@.@@@@@@..@@@@@.@@.@@.@
 @@..@...@@@.@..@@@@@.@@.@@.@..@..@@.@@@@@@..@@@@.@@@.@.@@.@@@@@@@@..@@@@.@@@@@@@@@@.@@...@....@.@.@@..@@@......@@@@@@@@@@.@.@@@@@@@.@...@@@
 @..@@.@.@@..@@@@..@@..@.@@..@@@@@@@@@.@@@...@.@@@@.@@@@@@@@@.@...@@...@.@@@.@.@@@.@@...@@@@.@@@.@.@..@.....@@.@@.@@.@@...@@@@@@@@@.@..@.@@@`;
 
+// Day 4 Actual Data
 const sampleInput = `..@@.@@@@.
 @@@.@.@.@@
 @@@@@.@.@@
@@ -149,12 +151,11 @@ const sampleInput = `..@@.@@@@.
 .@@@@@@@@.
 @.@.@@@.@.`;
 
-// return number of @ symbols that are surrounded by less than 4 other @ symbols.
+// Part 1: Count total @ symbols removed by iteratively eliminating those with fewer than 4 @ neighbors
+// Each iteration removes exposed symbols and continues until no more can be removed
 const printingDepartment = (input) => {
   const grid = input.split('\n').map((line) => line.split(''));
   let total = 0;
-  const logGrid = () => grid.forEach((line) => console.log(line.join('')));
-  // logGrid();
 
   const checkCell = (row, col) => {
     if ('@x'.includes(grid?.[row]?.[col])) {
@@ -185,12 +186,12 @@ const printingDepartment = (input) => {
       }
     }
   }
-  // logGrid();
 
   return total;
 };
 
-// return number of @ symbols that are surrounded by less than 4 other @ symbols.
+// Part 2: Count @ symbols that have fewer than 4 @ neighbors (including diagonals)
+// A single pass through the grid identifies and counts exposed symbols
 const printingDepartment2 = (input) => {
   const grid = input.split('\n').map((line) => line.split(''));
   let grandTotal = 0;
