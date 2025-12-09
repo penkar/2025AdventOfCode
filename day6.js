@@ -62,35 +62,36 @@ const trashCompactor = (input) => {
  */
 const trashCompactor2 = (input) => {
   let grandTotal = 0;
+  const lines = input.split('\n');
+  const nums = new Array(lines[0].length).fill(null);
+  const operator = [];
 
-  // Parse input into lines and split by whitespace
-  const lines = input.split('\n').map((line) => line.trim().split(/\s+/));
-
-  // Initialize answers array based on last line operations
-  const answers = lines[lines.length - 1].map((str) => {
-    if (str === '+') return 0; // Addition starts with 0
-    if (str === '*') return 1; // Multiplication starts with 1
+  lines.forEach((line) => {
+    for (let i = 0; i < line.length; i++) {
+      let char = line[i];
+      if (['+', '*'].includes(char)) {
+        operator.push(char);
+      } else if (char !== ' ') {
+        nums[i] = (nums[i] || 0) * 10 + parseInt(char, 10);
+      }
+    }
   });
 
-  // Process each row of numbers (excluding the last operation row)
-  for (let i = 0; i < lines.length - 1; i++) {
-    const line = lines[i];
-
-    // Apply operation to each column
-    line.forEach((value, colIndex) => {
-      answers[colIndex] = eval(
-        `${answers[colIndex]} ${lines[lines.length - 1][colIndex]} ${value}`
-      );
-    });
-  }
-
-  // Calculate final sum
-  grandTotal = answers.reduce((acc, val) => acc + val, 0);
+  let j = 0;
+  let start = operator[0] === '+' ? 0 : 1;
+  nums.forEach((num) => {
+    if (num === null) {
+      j++;
+      grandTotal += start;
+      start = operator[j] === '+' ? 0 : 1;
+    } else {
+      start = eval(`${start} ${operator[j]} ${num}`);
+    }
+  });
+  grandTotal += start;
   return grandTotal;
 };
 
 // Test with sample data
-console.log(trashCompactor(sampleData)); // Expected: 3263827
-
-// Test with actual data (uncomment to run)
-// console.log(trashCompactor(actualData)); // Expected: 3261038365331
+console.log(trashCompactor2(sampleData)); // Expected: 3263827
+console.log(trashCompactor2(actualData)); // Expected: 3261038365331
