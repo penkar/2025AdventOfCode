@@ -198,43 +198,34 @@ const laboratories2 = (input) => {
   let splits = 0;
 
   for (let row = 0; row < lines.length; row++) {
-    for (let col = 0; col < lines[row].length - 1; col++) {
+    for (let col = 0; col < lines[row].length; col++) {
       let curr = lines[row][col];
       if (curr === 'S') {
         if (lines[row + 1][col] === '.') {
           lines[row + 1][col] = 1;
         }
-      } else if (curr === '.' && '987654321'.includes(lines[row - 1]?.[col])) {
-        lines[row][col] = lines[row - 1][col];
+      } else if (curr === '.') {
+        lines[row][col] = lines[row - 1]?.[col] || '.';
       } else if (curr === '^') {
-        if (lines[row][col - 1] !== '^') {
-          let l =
-            (parseInt(lines[row][col - 1]) || 0) +
-            (parseInt(lines[row - 1][col]) || 0) +
-            (parseInt(lines[row - 1][col - 1]) || 0);
-          lines[row][col - 1] = l;
-        }
-        if (lines[row + 1][col] !== '^') {
-          let r =
-            (parseInt(lines[row][col + 1]) || 0) +
-            (parseInt(lines[row - 1][col]) || 0) +
-            (parseInt(lines[row - 1][col + 1]) || 0);
-          lines[row][col + 1] = r;
-        }
+        let n = parseInt(lines[row - 1][col]) || 0;
+        let l = parseInt(lines[row][col - 1]) || 0;
+        let r = parseInt(lines[row - 1][col + 1]) || 0;
+        lines[row][col - 1] = n + l;
+        lines[row][col + 1] = n + r;
       }
     }
   }
 
-  lines.forEach((line) => {
-    console.log(186, line.join(''));
-  });
-  console.log(187, lines[lines.length - 2]);
-  console.log(
-    188,
-    lines[lines.length - 2].reduce((acc, val) => acc + (parseInt(val) || 0), 0)
-  );
+  // lines.forEach((line) => {
+  //   console.log(186, line.join(''));
+  // });
 
-  return splits;
+  const total = lines[lines.length - 1].reduce((acc, val) => {
+    return acc + (parseInt(val) || 0);
+  }, 0);
+
+  return total;
 };
 
 console.log(laboratories2(sampleInput)); // 40
+console.log(laboratories2(input)); // 40
