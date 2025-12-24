@@ -9,6 +9,20 @@ ggg: out
 hhh: ccc fff iii
 iii: out`;
 
+const sampleInput2 = `svr: aaa bbb
+aaa: fft
+fft: ccc
+bbb: tty
+tty: ccc
+ccc: ddd eee
+ddd: hub
+hub: fff
+eee: dac
+dac: fff
+fff: ggg hhh
+ggg: out
+hhh: out`;
+
 const input = `rey: hlt gax hrb
 nhb: ttd
 yzv: qnv nif iyv
@@ -614,25 +628,38 @@ tpf: fnk
 dvo: smo
 rci: ggb enz zte`;
 
-const reactor = (input) => {
+function parse(input) {
+  return Object.fromEntries(
+    input.split('\n').map((line) => {
+      let [name, rest] = line.split(': ');
+      return [name, rest.split(' ')];
+    })
+  );
+}
+
+function memoize(fn) {
+  let memo = {};
+  return (...x) => {
+    let s = JSON.stringify(x);
+    return (memo[s] = memo[s] ?? fn(...x));
+  };
+}
+
+const solve = memoize((devices, curr, dac = true, fft = true) => {
+  if (curr === 'out') return dac && fft ? 1 : 0;
+  return devices[curr].reduce(
+    (sum, next) =>
+      sum + solve(devices, next, dac || curr === 'dac', fft || curr === 'fft'),
+    0
+  );
+});
+
+const reactor = (input, startNode) => {
   let total = 0;
-  const reactions = {};
-  const reverseReactions = {};
+  const reactions = parse(input);
 
   const reachedGoal = {};
   const visited = {};
-
-  const inputs = input.split('\n').map((line) => line.split(': '));
-  inputs.forEach(([output, input]) => {
-    const values = input.split(' ');
-    reactions[output] = values;
-    values.forEach((inp) => {
-      if (!reverseReactions[inp]) {
-        reverseReactions[inp] = [];
-      }
-      reverseReactions[inp].push(output);
-    });
-  });
 
   function dfs(node) {
     if (node === 'out') {
@@ -651,12 +678,18 @@ const reactor = (input) => {
     }
   }
 
-  dfs('you');
+  dfs(startNode);
 
   return {
     total,
-    reachedGoal: reachedGoal['you'],
+    reachedGoal: reachedGoal[startNode],
   };
 };
 
 // Part 1 answer 599.
+// console.log('Part 1:', reactor(sampleInput, 'you')); // 5
+console.log('Part 1:', reactor(input, 'you')); // 599
+console.log('Part 1:', solve(parse(input), 'you', true, true)); // 599
+
+const reactor2 = (input) => solve(parse(input), 'svr', false, false);
+console.log(reactor2(input)); // 393474305030400
