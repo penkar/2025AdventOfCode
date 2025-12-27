@@ -18,11 +18,11 @@ This repository contains my solutions to the Advent of Code 2025 programming cha
 - [ ] Day 7 Part 2
 - [ ] Day 8 Part 1
 - [ ] Day 8 Part 2
-- [ ] Day 9 Part 1
+- [x] Day 9 Part 1
 - [ ] Day 9 Part 2
 - [ ] Day 10 Part 1
-- [x] Day 10 Part 2
+- [ ] Day 10 Part 2
 - [x] Day 11 Part 1
-- [ ] Day 11 Part 2
+- [x] Day 11 Part 2
 - [ ] Day 12 Part 1
 - [ ] Day 12 Part 2

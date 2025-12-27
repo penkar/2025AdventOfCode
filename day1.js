@@ -4780,6 +4780,8 @@ R30
 R19
 L43`;
 
+const parser = (input) => input.split('\n');
+
 /**
  * Day 1 - Part 1: Secret Entrance
  * Processes directional commands and counts zero crossings
@@ -4787,7 +4789,7 @@ L43`;
  * @returns {Array<number>} - [final position, zero hits count]
  */
 const secretEntrance = (inputDirections) => {
-  const directions = inputDirections.split('\n');
+  const directions = parser(inputDirections);
   let startingPosition = 50;
   let zeroHits = 0;
 
@@ -4820,23 +4822,7 @@ const secretEntrance = (inputDirections) => {
  * @param {number} number - Position value to normalize
  * @returns {number} - Normalized position (0-99)
  */
-const shakeInput = (number) => {
-  return (number + 100) % 100;
-};
-
-/**
- * Debug logging function for tracking dial movements
- * @param {number} pos - Current position index
- * @param {string} direction - Direction of movement
- * @param {number} position - Current dial position
- * @param {string} turn - Turn direction (L/R)
- * @param {number} zeroHits - Current zero hits count
- */
-const logg = (pos, direction, position, turn, zeroHits) => {
-  console.log(
-    `${pos} The dial is rotated ${direction} to point at ${position}. Zero Hits: ${zeroHits}`
-  );
-};
+const shakeInput = (number) => (number + 100) % 100;
 
 /**
  * Day 1 - Part 2: Secret Entrance (Enhanced Zero Counting)
@@ -4845,7 +4831,7 @@ const logg = (pos, direction, position, turn, zeroHits) => {
  * @returns {Array<number>} - [final position, total zero hits]
  */
 const secretEntrancePart2 = (inputDirections) => {
-  const directions = inputDirections.split('\n');
+  const directions = parser(inputDirections);
   let position = 50;
   let zeroHits = 0;
 
