@@ -504,14 +504,21 @@ const sample1 = `7,1
 2,3
 7,3`;
 
+const parser = (data) => {
+  return data.split('\n').map((line) => {
+    const [x, y] = line.split(',').map(Number);
+    return { x, y };
+  });
+};
+
 const movieTheater = (data) => {
-  const lines = data.split('\n').map((line) => line.split(',').map(Number));
+  const lines = parser(data);
 
   let mostVisible = 0;
   for (let i = 0; i < lines.length; i++) {
-    const [x, y] = lines[i];
+    const { x, y } = lines[i];
     for (let j = i + 1; j < lines.length; j++) {
-      const [x2, y2] = lines[j];
+      const { x: x2, y: y2 } = lines[j];
       const amt = (Math.abs(x - x2) + 1) * (Math.abs(y - y2) + 1);
 
       mostVisible = Math.max(mostVisible, amt);
@@ -521,5 +528,58 @@ const movieTheater = (data) => {
   return mostVisible;
 };
 
-console.log('Day 9, Movie Theater Seating Arrangement:', movieTheater(sample1));
-console.log('Day 9, Movie Theater Seating Arrangement:', movieTheater(input));
+console.log('Day 9, Movie Theater Seating Arrangement:', movieTheater(sample1)); // 50
+console.log('Day 9, Movie Theater Seating Arrangement:', movieTheater(input)); // 4735222687
+
+const movieTheater2 = function (data) {
+  const lines = parser(data);
+  let mostVisible = 0;
+  for (let i = 0; i < lines.length; i++) {
+    const { x, y } = lines[i];
+    for (let j = i + 1; j < lines.length; j++) {
+      const { x: x2, y: y2 } = lines[j];
+      const amt = (Math.abs(x - x2) + 1) * (Math.abs(y - y2) + 1);
+      mostVisible = Math.max(mostVisible, amt);
+    }
+  }
+  return mostVisible;
+};
+
+// console.log('Day 9, Movie Theater Seating Arrangement:', movieTheater2(sample1));
+// console.log('Day 9, Movie Theater Seating Arrangement:', movieTheater2(input));
+
+const part2 = function (input) {
+  const points = parser(input);
+  const squares = [];
+  for (let i = 0; i < points.length; i++) {
+    for (let j = i + 1; j < points.length; j++) {
+      const p1 = points[i];
+      const p2 = points[j];
+      const area = (Math.abs(p1.x - p2.x) + 1) * (Math.abs(p1.y - p2.y) + 1);
+      squares.push({ area: area, p1: p1, p2: p2 });
+    }
+  }
+  squares.sort(function (a, b) {
+    return b.area - a.area;
+  });
+
+  const sides = [];
+  for (let i = 0; i < points.length; i++) {
+    const p1 = points[i];
+    const p2 = points[(i + 1) % points.length];
+    sides.push({ p1: p1, p2: p2 });
+  }
+
+  const disjoint = (a1, a2, b1, b2) =>
+    Math.max(a1, a2) <= Math.min(b1, b2) ||
+    Math.max(b1, b2) <= Math.min(a1, a2);
+
+  return squares.find((square) => {
+    return sides.every(
+      (side) =>
+        disjoint(side.p1.y, side.p2.y, square.p1.y, square.p2.y) ||
+        disjoint(side.p1.x, side.p2.x, square.p1.x, square.p2.x)
+    );
+  }).area;
+};
+console.log('Day 9 Part 2, Movie Theater Seating Arrangement:', part2(input)); // 1569262188
