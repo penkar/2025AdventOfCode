@@ -4864,9 +4864,9 @@ const secretEntrancePart2 = (inputDirections) => {
 };
 
 // Test Part 1 with sample and actual data
-console.log('Part 1 - Sample:', secretEntrance(secretEntranceSampleInput));
-console.log('Part 1 - Actual:', secretEntrance(secretEntranceInput));
+console.log('Part 1 - Sample:', secretEntrance(secretEntranceSampleInput)); // 3
+console.log('Part 1 - Actual:', secretEntrance(secretEntranceInput)); // 1180
 
 // Test Part 2 with sample and actual data
-console.log('Part 2 - Sample:', secretEntrancePart2(secretEntranceSampleInput));
-console.log('Part 2 - Actual:', secretEntrancePart2(secretEntranceInput));
+console.log('Part 2 - Sample:', secretEntrancePart2(secretEntranceSampleInput)); // 6
+console.log('Part 2 - Actual:', secretEntrancePart2(secretEntranceInput)); // 6892
