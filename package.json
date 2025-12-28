@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "git@github.com:penkar/2025AdventOfCode.git",
   "author": "JSP <jspenkar@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "power-set": "^1.1.8"
+  }
 }

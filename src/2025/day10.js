@@ -1,3 +1,5 @@
+const power = require('power-set');
+
 const input = `[#..##.#..] (1,2,4,6,8) (0,1,6) (0,1,2,5,6,8) (0,1,2,4,6,7,8) (0,2,4,6,7,8) (0,1,2,3,4,5) (3,5,7) (0,3,4,6) {56,47,33,28,34,27,55,4,24}
 [##..#.#.] (2,6,7) (1,2) (0,3,4,5) (0,2,3,4,6) (1,4,6,7) (0,2,3,4,5,6) (0,4) (1,3,4,5,6,7) {200,33,65,47,216,29,64,32}
 [.#..#..#] (0,1,2,3,4,5,6) (2,3,4,6,7) (1,2) (2,6,7) (2,3) (0,3,6,7) (1,2,3,4,5,6,7) {4,28,40,22,20,14,24,20}
@@ -161,4 +163,148 @@ const sampleInput = `[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
 [...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}
 [.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}`;
 
-const factory = () => {};
+const parseInputPart1 = (input) => {
+  const powerSetTool1 = (arr) => {
+    // Start with an array containing only the empty set
+    return arr
+      .reduce(
+        (acc, element) => {
+          // For each element, create new subsets by combining it with existing subsets
+          const newSubsets = acc.map((subset) => [...subset, element]);
+          // Merge the new subsets with the existing ones
+          return acc.concat(newSubsets);
+        },
+        [[]]
+      )
+      .map((numberSet) => {
+        const newSet = new Set();
+        numberSet
+          .flat()
+          .sort()
+          .forEach((item) => {
+            if (newSet.has(item)) {
+              newSet.delete(item);
+            } else {
+              newSet.add(item);
+            }
+          });
+
+        return {
+          array: [...newSet],
+          len: numberSet.length,
+        };
+      })
+      .sort((a, b) => a.len - b.len);
+  };
+
+  return input.split('\n').map((line) => {
+    const patternMatch = line
+      .match(/^\[(.*?)\]/)[1]
+      .split('')
+      .map((ch) => (ch === '#' ? true : false));
+    const groupsMatches = [...line.matchAll(/\((.*?)\)/g)].map((match) =>
+      match[1].split(',').map(Number)
+    );
+    const countsMatch = line.match(/\{(.*?)\}/);
+
+    return {
+      pattern: patternMatch,
+      groups: powerSetTool1(groupsMatches, {}),
+      counts: countsMatch[1].split(',').map(Number),
+    };
+  });
+};
+
+const factoryPart1 = (input) => {
+  const patterns = parseInputPart1(input);
+
+  let count = 0;
+  patterns.forEach(({ pattern, groups, counts }, i) => {
+    let min = Infinity;
+    let p = [...pattern];
+
+    for (let i = 0; i < groups.length; i++) {
+      const { array, len } = groups[i];
+      let tempP = [...p];
+      array.forEach((pos) => {
+        tempP[pos] = !tempP[pos];
+      });
+      if (tempP.every((v) => v === false)) {
+        min = len;
+        break;
+      }
+    }
+    count += min;
+  });
+
+  return count;
+};
+
+const parseInputPart2 = (input) => {
+  const powerSetTool2 = (arr) => {
+    // Start with an array containing only the empty set
+    return arr
+      .reduce(
+        (acc, element) => {
+          // For each element, create new subsets by combining it with existing subsets
+          const newSubsets = acc.map((subset) => [...subset, element]);
+          // Merge the new subsets with the existing ones
+          return acc.concat(newSubsets);
+        },
+        [[]]
+      )
+      .map((numberSet) => ({
+        array: numberSet.flat(),
+        len: numberSet.length,
+      }))
+      .sort((a, b) => a.len - b.len);
+  };
+
+  return input.split('\n').map((line) => {
+    const patternMatch = line
+      .match(/^\[(.*?)\]/)[1]
+      .split('')
+      .map((ch) => (ch === '#' ? true : false));
+    const groupsMatches = [...line.matchAll(/\((.*?)\)/g)].map((match) =>
+      match[1].split(',').map(Number)
+    );
+    const countsMatch = line.match(/\{(.*?)\}/);
+
+    return {
+      pattern: patternMatch,
+      groups: powerSetTool2(groupsMatches, {}),
+      counts: countsMatch[1].split(',').map(Number),
+    };
+  });
+};
+
+const factoryPart2 = (input) => {
+  const patterns = parseInputPart2(input);
+
+  let count = 0;
+  patterns.forEach(({ groups, counts }, i) => {
+    console.log({ counts });
+
+    for (let i = 0; i < groups.length; i++) {
+      const { array, len } = groups[i];
+      let tempP = [...counts];
+
+      array.forEach((pos) => {
+        tempP[pos] = tempP[pos] - 1;
+      });
+      console.log({ tempP, array, len });
+
+      if (tempP.every((v) => v === 0)) {
+        count += len;
+        break;
+      }
+    }
+  });
+
+  return count;
+};
+
+// console.log('Sample Data Factory day 10, ', factoryPart1(sampleInput)); // 7
+// console.log('Sample Data Factory day 10, ', factoryPart1(input)); // 409
+console.log('Sample Data Factory day 10, ', factoryPart2(sampleInput)); // 33
+// console.log('Sample Data Factory day 10, ', factoryPart2(input)); //
