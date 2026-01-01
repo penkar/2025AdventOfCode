@@ -4,8 +4,8 @@ Each day's challenge is implemented in a separate JavaScript file.
 
 - [x] Day 1 Part 1
 - [x] Day 1 Part 2
-- [ ] Day 2 Part 1
-- [ ] Day 2 Part 2
+- [x] Day 2 Part 1
+- [x] Day 2 Part 2
 - [x] Day 3 Part 1
 - [x] Day 3 Part 2
 - [x] Day 4 Part 1

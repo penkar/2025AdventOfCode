@@ -60,10 +60,11 @@ const giftShop2 = (data) => {
         if (found) continue;
         if (len % j !== 0) continue;
 
-        let str = strNum.slice(0, j);
-        let repeated = str.repeat(len / j);
+        const str = strNum.slice(0, j);
+        const regex = new RegExp(`^(${str}){${len / j}}$`);
+        const test = regex.test(strNum);
 
-        if (repeated === strNum) {
+        if (test) {
           total += i;
           found = true;
         }
